@@ -1,12 +1,10 @@
 function checkCookies() {
-	var cookie = document.cookie;
-	if(cookie.length > 0) {
-		console.log(cookie);
+	if(localStorage.length > 0) {
 		var inBut = document.getElementById("loginButton");
 		var outBut = document.getElementById("logoutButton");
 		var mainPage = document.getElementById("main");		
-		var username = getCookie();
-
+		var username = localStorage.getItem("user"); //getCookie();
+		console.log(localStorage.getItem("user"));
 		inBut.style = "display:none";
 		outBut.style = "display:block";
 		mainPage.innerHTML = "<h1>Hello " + username + "</h1>";
@@ -45,8 +43,8 @@ function login() {
 	if(name.value.length < 6 || pass.value.length < 6) return;
 	var d = new Date();
 	d.setTime(d.getTime() + 24*60*60*1000);
-	setCookie(name.value, d);
-	console.log(document.cookie);
+	localStorage.setItem("user", name.value);
+	//console.log(localStorage.getItem("user"));
 	mainPage.innerHTML = "<h1>Hello " + name.value + "</h1>";
 	name.value = "";
 	pass.value = "";
@@ -60,23 +58,9 @@ function logout() {
 	var outBut = document.getElementById("logoutButton");
 	var mainPage = document.getElementById("main");
 
-	deleteCookie();
-	console.log(document.cookie);
+	localStorage.removeItem("user");
 	inBut.style = "display:block";
 	outBut.style = "display:none";
 	mainPage.innerHTML = "<h1>Please Login</h1>";
 	displayContent("main");
-}
-
-function setCookie(name, date) {
-	document.cookie = "username=" + name + ";expires=" + date;
-}
-
-function getCookie() {
-	var name = document.cookie.split(";")[0].split("=")[1];
-	return name;
-}
-
-function deleteCookie() {
-	document.cookie = "username=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
 }
